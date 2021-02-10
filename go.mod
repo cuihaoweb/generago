@@ -1,4 +1,4 @@
-module github.com/cuihao-github/generago
+module github.com/cuihaoweb/generago
 
 go 1.15
 
