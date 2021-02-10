@@ -1,4 +1,4 @@
-package codegenerate
+package generatego
 
 // MysqlConf 用户配置
 type MysqlConf struct {
