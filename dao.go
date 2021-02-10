@@ -1,4 +1,4 @@
-package codegenerate
+package generatego
 
 import (
 	"fmt"
