@@ -1,27 +1,24 @@
-package generatego
+package schema
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/cuihaoweb/generago/templates"
 )
 
-var str1 string = `package model
-
-import "database/sql"
-
-// {{FuncTitle .TableName}} xx
-type {{FuncTitle .TableName}} struct {
-    {{range $k, $v := .FieldList}}` +
-	"{{FuncTitle $v.Name}} \t {{$v.Type}} \t `json:\"{{$v.Name}}\"` \t {{FuncComment $v.Comment}}" + `
-    {{end}}
-}`
+// Template xx
+type Template struct {
+	Temp *template.Template
+}
 
 // initTemplate 初始化
-func initTemplate() {
+func (t *Template) initTemplate() {
+	var temp = (*t).Temp
+	var str = templates.MODEL
 	var err error
 
 	temp = template.New("code-generate")
@@ -38,13 +35,14 @@ func initTemplate() {
 		},
 	})
 	// temp, err = temp.ParseFiles("./temp/model.tmpl")
-	temp, err = temp.Parse(str1)
+	temp, err = temp.Parse(str)
 	if err != nil {
 		panic("解析模板文件失败\n--------------------------------------------")
 	}
 }
 
-func getTemplateContent(key string, val []MysqlField) string {
+func (t *Template) getTemplateContent(key string, val []MysqlField) string {
+	var temp = (*t).Temp
 	var buf bytes.Buffer
 	var mapContent = make(map[string]interface{})
 
@@ -60,10 +58,9 @@ func getTemplateContent(key string, val []MysqlField) string {
 
 func createFile(filedName string, content string) {
 	var path = filedName + ".go"
-	fmt.Print(path)
 
 	//创建目录
-	os.MkdirAll("./model", os.ModePerm)
+	os.MkdirAll(path, os.ModePerm)
 
 	if err := ioutil.WriteFile(path, []byte(content), 0666); err != nil {
 		panic("写入文件失败\n--------------------------------------------")

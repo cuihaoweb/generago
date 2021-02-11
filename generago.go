@@ -1,68 +1,75 @@
-package generatego
+package main
 
 import (
 	"fmt"
-	"text/template"
+
+	"github.com/cuihaoweb/generago/schema"
+	"github.com/cuihaoweb/generago/util"
 )
 
-var mysqlConfig MysqlConf                       // mysqlConfig 数据库配置信息
-var temp *template.Template                     // 模板
-var databaseMap = make(map[string][]MysqlField) // 保存的数据库数据
-var outDir string                               // 输出的目录
+// Model xx
+type Model schema.MysqlConf
 
-// SetDataSource 设置数据库的连接信息
-func SetDataSource(mysqlConf MysqlConf) {
-	verifyDataSource(mysqlConf)
-
-	mysqlConfig = mysqlConf
-
-	arrList1 := getTables()
-	for _, value := range arrList1 {
-		databaseMap[value] = getFields(value)
+func main() {
+	models := Model{
+		User:     "123",
+		Password: "李白",
 	}
-}
-func verifyDataSource(mysqlConf MysqlConf) {
-	// verifyDataSource 验证数据库配置
-	if mysqlConf.DbName == "" {
-		panic("数据库配置\t=>\t数据库名DbName不能为空\n------------------------------------------")
-	} else if mysqlConf.User == "" {
-		panic("数据库配置\t=>\t数据库用户User不能为空\n------------------------------------------")
-	} else if mysqlConf.Password == "" {
-		panic("数据库配置\t=>\t数据库密码Password不能为空\n------------------------------------------")
-	}
+	var model1 = schema.MysqlConf{}
+	util.CopyMap(models, &model1)
+	fmt.Print(model1)
 }
 
-// SetOutDir 设置输出路径
-func SetOutDir(dir string) {
-	var len = len(dir)
+// var mysqlConfig model.MysqlConf                   // mysqlConfig 数据库配置信息
+// var template *template.Template                   // 模板
+// var dataMap = make(map[string][]model.MysqlField) // 保存的数据库数据
+// var outDir string                                 // 输出的目录
 
-	if dir[len-1] == '/' {
-		outDir = dir
-		return
-	}
-	outDir = dir + "/"
-}
+// // SetDataSource 设置数据库的连接信息
+// func SetDataSource(mysqlConf model.MysqlConf) {
+// 	verifyDataSource(mysqlConf)
 
-// Execute 执行操作
-func Execute() {
-	initTemplate()
+// 	mysqlConfig = mysqlConf
 
-	templateHandler()
-}
+// 	arrList1 := getTables()
+// 	for _, value := range arrList1 {
+// 		databaseMap[value] = getFields(value)
+// 	}
+// }
+// func verifyDataSource(mysqlConf MysqlConf) {
+// 	// verifyDataSource 验证数据库配置
+// 	if mysqlConf.DbName == "" {
+// 		panic("数据库配置\t=>\t数据库名DbName不能为空\n------------------------------------------")
+// 	} else if mysqlConf.User == "" {
+// 		panic("数据库配置\t=>\t数据库用户User不能为空\n------------------------------------------")
+// 	} else if mysqlConf.Password == "" {
+// 		panic("数据库配置\t=>\t数据库密码Password不能为空\n------------------------------------------")
+// 	}
+// }
 
-func templateHandler() {
-	// 模板处理部分
-	for key, val := range databaseMap {
-		str := getTemplateContent(key, val)
-		fmt.Print(str)
-		createFile(outDir+key, str)
-	}
-}
+// // SetOutDir 设置输出路径
+// func SetOutDir(dir string) {
+// 	var len = len(dir)
 
-// // InitTest 测试
-// func InitTest() {
-// 	SetDataSource(MysqlConf{DbName: "test", User: "root", Password: "ch1997"})
-// 	SetOutDir("./model")
+// 	if dir[len-1] == '/' {
+// 		outDir = dir
+// 		return
+// 	}
+// 	outDir = dir + "/"
+// }
+
+// // Execute 执行操作
+// func Execute() {
 // 	initTemplate()
+
 // 	templateHandler()
+// }
+
+// func templateHandler() {
+// 	// 模板处理部分
+// 	for key, val := range databaseMap {
+// 		str := getTemplateContent(key, val)
+// 		fmt.Print(str)
+// 		createFile(outDir+key, str)
+// 	}
 // }
