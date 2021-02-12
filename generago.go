@@ -40,12 +40,3 @@ func Execute() {
 		fileMode.OutputFile(val, str)
 	}
 }
-func main() {
-	SetDataSource(DataSource{
-		DbName:   "test",
-		User:     "root",
-		Password: "ch1997",
-	})
-	SetOutDir("./model")
-	Execute()
-}
