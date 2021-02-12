@@ -1,4 +1,4 @@
-package main
+package generago
 
 import (
 	"github.com/cuihaoweb/generago/schema"
