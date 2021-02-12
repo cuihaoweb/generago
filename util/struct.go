@@ -4,8 +4,8 @@ import (
 	"reflect"
 )
 
-// CopyMap 将a结构体赋值非b结构体， 前提是两者必须存在相同字段
-func CopyMap(a interface{}, b interface{}) {
+// CopyStruct 将a结构体赋值非b结构体， 前提是两者必须存在相同字段
+func CopyStruct(a interface{}, b interface{}) {
 	verifyCopyMap(b)
 	var t1 = reflect.TypeOf(a)
 	var v1 = reflect.ValueOf(a)
